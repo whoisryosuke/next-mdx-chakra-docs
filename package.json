@@ -1,0 +1,36 @@
+{
+  "name": "next-mdx-boilerplate",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "format": "prettier --write '**/*.{js,jsx}'",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@chakra-ui/core": "^0.7.0",
+    "@emotion/core": "^10.0.28",
+    "@emotion/styled": "^10.0.27",
+    "@mdx-js/loader": "^1.5.8",
+    "@next/mdx": "^9.3.4",
+    "emotion": "^10.0.27",
+    "emotion-server": "^10.0.27",
+    "emotion-theming": "^10.0.27",
+    "next": "9.3.4",
+    "react": "16.13.1",
+    "react-dom": "16.13.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-emotion": "^10.0.33",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^2.5.1",
+    "prettier": "^2.0.4"
+  }
+}
