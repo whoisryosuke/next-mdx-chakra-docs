@@ -4,12 +4,12 @@ import {
   ThemeProvider as ChakraThemeProvider,
   theme as ChakraTheme,
 } from '@chakra-ui/core'
-import { CacheProvider } from '@emotion/core'
+import { CacheProvider, Global, css } from '@emotion/core'
 import { cache } from 'emotion'
 
 const theme = {
   ...ChakraTheme,
-  breakpoints: ['30em', '48em', '62em', '80em'],
+  breakpoints: ['40em', '60em', '62em', '80em'],
   fonts: {
     heading: '"Avenir Next", sans-serif',
     body: 'system-ui, sans-serif',
@@ -34,6 +34,19 @@ export const ThemeProvider = ({ children }) => {
     <CacheProvider value={cache}>
       <ChakraThemeProvider theme={theme}>
         <CSSReset />
+        <Global
+          styles={css`
+            html {
+              overflow: hidden;
+              height: 100%;
+            }
+
+            body {
+              height: 100%;
+              overflow: auto;
+            }
+          `}
+        />
         {children}
       </ChakraThemeProvider>
     </CacheProvider>

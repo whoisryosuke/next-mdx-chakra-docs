@@ -1,5 +1,5 @@
-import React from "react"
-import { Badge, Box, Flex, Heading, Link, Text } from '@chakra-ui/core'
+import React, {useState} from "react"
+import { Badge, Box, Button, Flex, Heading, Link, Text } from '@chakra-ui/core'
 
 const SIDE_PADDING = 4
 
@@ -41,17 +41,32 @@ const SidebarSubheading = ({ href, text, level = 1 }) => {
     )
 }
 
-const Sidebar = ({hidden}) => {
+const Sidebar = () => {
+
+  const [hidden, setHidden] = useState(false)
+
+  const toggleSidebar = (e) => {
+    e.preventDefault()
+
+    setHidden((prevState) => !prevState)
+  }
+
+    const overflowSidebar = hidden ? 'visible' : 'scroll'
+    const hideMenu = hidden ? '-120%' : '0'
+    const menuHeight = hidden ? '3em' : '100vh'
 
     return (
       <Box
-        width={[1, '300px']}
+        width={['100%', '300px']}
+        height={[menuHeight, '100vh']}
         minHeight={['auto', '100vh']}
         maxHeight={['auto', '100vh']}
         bg="gray.50"
         borderRightWidth="1px"
         borderColor="gray.40"
-        overflowY={['visible', 'scroll']}
+        overflowY={[overflowSidebar, 'scroll']}
+        position="fixed"
+        zIndex={999}
       >
         <Flex
           p={[1, SIDE_PADDING]}
@@ -59,13 +74,17 @@ const Sidebar = ({hidden}) => {
           justifyContent="space-between"
           borderBottomWidth="1px"
           borderColor="gray.40"
+          bg="gray.50"
+          position="sticky"
+          zIndex={710}
         >
           <Heading as="h1">Logo</Heading>
           <Box>
             <Badge>v1.0.0</Badge>
+            <Box display="inline-block" visibility={['visible', 'hidden']} marginLeft={4}><Button onClick={toggleSidebar}>Menu</Button></Box>
           </Box>
         </Flex>
-        <Box as="nav">
+        <Box as="nav" zIndex={420} transition="transform 400ms ease-in" transform={[`translateX(${hideMenu})`, `translateX(0)`]}>
           <SidebarSection>
             <SidebarCategory text="API" />
             <SidebarHeading href="#" text="Getting Started" />
