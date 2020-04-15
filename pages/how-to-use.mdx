@@ -1,0 +1,324 @@
+import DocsContent from '../layouts/DocsContent'
+
+<DocsContent>
+
+# How to Use
+
+This project is setup using NextJS, their MDX plugin, and Chakra UI.
+
+## Quick Start
+
+1. Clone the example repo.
+
+```bash
+git clone https://github.com/whoisryosuke/next-mdx-chakra-docs
+```
+
+2. Install the dependencies.
+
+```bash
+yarn
+```
+
+3. Spin up the dev server.
+
+```bash
+yarn dev
+```
+
+## Creating Content
+
+### MDX Pages
+
+Create a new MDX file anywhere inside the `/pages/` directory. 
+
+The folder structrure will determine the URL slug (e.g. `/pages/blog/your-post.mdx` = http://localhost:3000/blog/your-post).
+
+### Import MDX as Content
+
+If you want to create NextJS pages as React components (e.g. `/pages/your-page.js`) and use MDX as content, you can import MDX files like you would any other dependencies.
+
+```js
+import About from "./about.mdx"
+
+const TestPage = () => {
+
+    return (
+        <div>
+            <div>Test</div>
+            <About />
+        </div>
+    )
+}
+export default TestPage
+```
+
+### Dynamic import
+
+When you need to load the MDX content on demand, like for a post archive, you can use Next's dynamic utility. It's normally used for importing React component dynamically (like React.lazy), but instead we leverage it for MDX (since it requires Webpack parsing like React components). 
+
+```js
+import dynamic from 'next/dynamic'
+
+const BlogPostPage = ({ filename }) => {
+    console.log('the filename', filename)
+    const MDXContent = dynamic(() => import(`../../../${filename}`))
+		// Not convinced this works, but this is theoretically how it happens
+    const MDXMetadata = dynamic(() => import(`../../../${filename}`).then(mod => mod.metadata))
+    console.log('the content', MDXMetadata)
+    return (
+        <div>
+            <h1>Blog</h1>
+            <MDXContent />
+            <h2>Blog Title: {MDXMetadata.title}</h2>
+            <h2>Date: {MDXMetadata.date}</h2>
+        </div>
+    )
+}
+```
+
+The import is relative to the page file, and you can't rely on Node's `path`.  The `metadata` is an object that is exported from the MDX file (`export const metadata`), and it's pulled out from `dynamic` using a Promise. You can [read more about @next/dynamic here](https://nextjs.org/docs/advanced-features/dynamic-import).
+
+## Common Issues
+
+Despite the setup being immensely easy to accomplish, and incredibly powerful, it suffers from it's simplicity. Here are the common issues I discovered while adding features, as well as any workarounds I found.
+
+### Page layouts
+
+Previously when integrating Markdown with NextJS, you'd parse the Markdown content, check the frontmatter, see if there was a "section" or "layout" parameter, and swap the layout based off that. This all would happen inside a dynamic page component (like `/pages/blog/[slug].js`) where you'd use the the NodeJS filesystem (`fs`) to query for the content (and inevitably parse it).
+
+With MDX, it's a much simpler process. You import the layout component and wrap you MDX content in it:
+
+```js
+import AboutPage from "../layouts/AboutPage"
+
+<AboutPage>
+
+# About
+
+A test MDX page.
+
+</AboutPage>
+```
+
+This is much simpler than the alternative, where you're forced to parse the MDX (see below).
+
+### Frontmatter is a problem
+
+By default, the MDX plugin for Next doesn't support frontmatter. If you include it inside your MDX file, it'll print out inside the content area of the post 🤮 If you're migrating an existing content library to Next, and you have to use MDX, make sure you're not using frontmatter in any posts (or have an efficient way to convert it to the method below).
+
+The way you handle frontmatter in MDX is a little different. Since MDX allows you to write Javascript inside your files, like importing and using React components, you can also export data. According to the MDX docs, this is how it looks like:
+
+```mdx
+import { sue, fred } from '../data/authors'
+export const metadata = {
+    authors: [sue, fred]
+}
+# Post about MDX
+MDX is a JSX in Markdown loader, parser, and renderer for ambitious projects.
+```
+
+And when you want to use the metadata (i.e. frontmatter), you import it as a module alongside the post content:
+
+```js
+import React from 'react'
+import MDXContent, {metadata} from 'posts/post.mdx'
+export default () => (
+    <>
+    <MDXContent />
+    <footer>
+        <p>By: {metadata.authors.map(author => author.name).join(', ') + '.'}</p>
+    </footer>
+    </>
+)
+```
+
+This works great if you're importing your content directly into your pages (like the second method above in the page creation section).
+
+The only issue? You can't get this dynamically, since MDX files require Webpack parsing to access the metadata like this. Instead, it's recommend you load the data using Node's filesystem, then parse the MDX file manually using [MDX AST](https://mdxjs.com/advanced/ast). Then you can walk through the tree to find the metadata object.
+
+```json
+{
+    "type": "root",
+    "children": [
+    {
+        "type": "import",
+        "value": "import { sue, fred } from '../data/authors'\n",
+        "position": {
+        "start": {
+            "line": 1,
+            "column": 1,
+            "offset": 0
+        },
+        "end": {
+            "line": 2,
+            "column": 1,
+            "offset": 44
+        },
+        "indent": [
+            1
+        ]
+        }
+    },
+    {
+        "type": "export",
+        "value": "export const metadata = {\n  authors: [sue, fred]\n}",
+        "position": {
+        "start": {
+            "line": 2,
+            "column": 1,
+            "offset": 44
+        },
+        "end": {
+            "line": 4,
+            "column": 2,
+            "offset": 94
+        },
+        "indent": [
+            1,
+            1
+        ]
+        }
+    },
+```
+
+It's not clear how to get the AST however? The docs don't make it clear anywhere how to parse MDX manually without some sort of plugin for a framework (like CRA or Next).
+
+### Post Archives / Post Summaries
+
+The basic process for creating post archives:
+
+- You use the getStaticProps method in your page (like a blog archive). In the method, you use Node's fs method to access the MDX content directory. Then you can loop over the posts however you need.
+- Since you will likely need frontmatter, you'll need to parse the MDX as an AST and navigate it to find that. Here you can also try to pull a blog summary by avoiding any JS that may be at the top of the MDX.
+
+The major issue with this is the amount of processing required. Each page that references the MDX content will be required to parse it separately, since each page executes it's own `getStaticProps` lifecycle. You could try to cache the results? But at this point, you might want to explore options like Gatsby that create a unified data layer with GraphQL.
+
+**Example of an archive page:**
+
+```js
+    export async function getStaticProps({ params }) {
+        const postsDirectory = path.join(process.cwd(), 'posts')
+        const mdxFiles = fs.readdirSync(postsDirectory)
+        // const mdxFiles = fs.readdirSync("posts")
+        // Loop through all post files and create array of slugs (to create links)
+        const paths = files.map(filename => ({ slug: filename.replace(".mdx", "") }));
+    
+        // Optionally loop through files, get content, and parse frontmatter
+        const postsWithFrontmatter = files.map(filename => {
+            const postContent = fs.readFileSync(path.join("posts", params.slug + ".mdx")).toString();
+    
+            // Dont do this.
+            // const frontmatter = matter(postContent)
+    
+            // Parse the MDX as an AST instead
+            // Use the MDX library to parse here "server-side"
+            // Pass the parsed data back to page component below
+    
+            return ({
+                slug: filename.replace(".mdx", ""),
+                frontmatter
+            })
+        })
+    
+        return {
+            props: {
+                posts: paths
+                // or posts: postsWithFrontmatter
+            }
+        }
+    }
+```
+
+**Example of a single page:**
+
+Here we use the `@next/dynamic` library to dynamically load the MDX data using Webpack (since Webpack parses the content for us, and without it we'd have a giant unparsed string of MDX).
+
+`pages/blog/post/[slug].js`:
+
+```js
+    import fs from 'fs'
+    import path from 'path'
+    import dynamic from 'next/dynamic'
+    
+    const BlogPostPage = ({ filename }) => {
+        console.log('the filename', filename)
+        const MDXContent = dynamic(() => import(`../../../${filename}`))
+        const MDXMetadata = dynamic(() => import(`../../../${filename}`).then(mod => mod.metadata))
+        console.log('the content', MDXMetadata)
+        return (
+            <div>
+                <h1>Blog</h1>
+                <MDXContent />
+                <h2>Blog Title: {MDXMetadata.title}</h2>
+                <h2>Date: {MDXMetadata.date}</h2>
+            </div>
+        )
+    }
+    
+    export async function getStaticProps({ params }) {
+        const filename = path.join("content/blog", params.slug + ".mdx")
+    
+        // const frontmatter = matter(mdxPost)
+    
+        return {
+            props: {
+                filename
+            },
+        }
+    }
+    
+    export async function getStaticPaths() {
+        const postsDirectory = path.join(process.cwd(), 'content/blog')
+        const mdxFiles = fs.readdirSync(postsDirectory)
+        console.log('the queried pages', mdxFiles)
+        // Loop through all post files and create array of slugs (to create links)
+        const paths = mdxFiles.map(filename => ({
+            params: {
+                slug: filename.replace(".mdx", "")
+            }
+        }));
+    
+        return {
+            paths,
+            fallback: false
+        }
+    }
+    
+    export default BlogPostPage
+```
+
+### Displaying 404 for pages that don't exist
+
+If you use the `getStaticPaths` method in any dynamic pages, NextJS will keep a static map of all your dynamic routes (like blog posts). If a page isn't included in the static path method, a 404 will be displayed.
+
+If for whatever reason the component doesn't receive the post data it needs to render, like a slug, you can return NextJS' error page:
+
+```js
+    import { useRouter } from 'next/router'
+    import ErrorPage from 'next/error'
+    
+    const router = useRouter()
+    if (!router.isFallback && !post?.slug) {
+        return <ErrorPage statusCode={404} />
+    }
+```
+
+### Handling emojis and image URLs
+
+MDX supports remark plugins, so you can use plugins like [remark-images](https://github.com/remarkjs/remark-images) and [remark-emoji](https://github.com/rhysd/remark-emoji).
+
+Images allows you to write image URLs directly (e.g. "[http://my.domain.app/image.png"](http://my.domain.app/image.png%22)) and it converts it to a Markdown friendly image syntax. The emoji plugin allows you to write emojis in the Markdown syntax (e.g. `:dog:` becomes 🐶).
+
+```js
+const images = require('remark-images')
+const emoji = require('remark-emoji')
+
+const withMDX = require('@next/mdx')({
+    extension: /\.mdx?$/,
+    options: {
+    mdPlugins: [images, emoji]
+    }
+})
+```
+
+</DocsContent>

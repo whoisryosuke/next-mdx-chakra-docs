@@ -14,7 +14,9 @@ export default function DocsContent({ children }) {
         paddingRight={[10, 16]}
         py={[20, 10]}
       >
-        <Box minWidth={['100%', 'auto']} maxWidth='640px'>{children}</Box>
+        <Box minWidth={['100%', 'auto']} maxWidth="640px">
+          {children}
+        </Box>
       </Box>
     </Flex>
   )
