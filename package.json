@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "lint": "eslint . --ext js,jsx",
     "format": "prettier --write '**/*.{js,jsx}'",
     "start": "next start"
   },
