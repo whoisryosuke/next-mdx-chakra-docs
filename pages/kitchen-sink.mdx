@@ -6,19 +6,19 @@ import DocsContent from '../layouts/DocsContent'
 
 This project comes setup with Chakra UI components available in MDX without import. They also replace common HTML elements used in the Markdown, such as headers and list items.
 
-##
+You can write `inline code <here>`
 
-`inline code <here>`
+Or use React components / JSX in your code:
 
 <Button variantColor="green" mb={4}>Test button</Button>
 
-## Code
+## Code Example
 
 ```js
 const test = code();
 ```
 
-### Example
+### List Example
 
 - Fast
 - Friendly
@@ -26,8 +26,534 @@ const test = code();
 
 ***
 
-# Another Section
+# Images
 
 ![](https://images.unsplash.com/photo-1586455122412-4576812ffe42?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=60)
+
+***
+
+# Chakra UI components
+
+You can use any of these component inside MDX without importing them.
+
+## Accordion
+
+<Accordion>
+  <AccordionItem>
+    <AccordionHeader>
+      <Box flex="1" textAlign="left">
+        Section 1 title
+      </Box>
+      <AccordionIcon />
+    </AccordionHeader>
+    <AccordionPanel pb={4}>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+      commodo consequat.
+    </AccordionPanel>
+  </AccordionItem>
+
+  <AccordionItem>
+    <AccordionHeader>
+      <Box flex="1" textAlign="left">
+        Section 2 title
+      </Box>
+      <AccordionIcon />
+    </AccordionHeader>
+    <AccordionPanel pb={4}>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+      commodo consequat.
+    </AccordionPanel>
+  </AccordionItem>
+</Accordion>
+
+## Alert
+
+<Stack spacing={3}>
+  <Alert status="error">
+    <AlertIcon />
+    There was an error processing your request
+  </Alert>
+
+  <Alert status="success">
+    <AlertIcon />
+    Data uploaded to the server. Fire on!
+  </Alert>
+
+  <Alert status="warning">
+    <AlertIcon />
+    Seems your account is about to expire, upgrade now!
+  </Alert>
+
+  <Alert status="info">
+    <AlertIcon />
+    Chakra is going live on August 30th. Get ready!
+  </Alert>
+</Stack>
+
+## AspectRatioBox
+
+<AspectRatioBox maxW="560px" ratio={1}>
+  <Box
+    as="iframe"
+    title="naruto"
+    src="https://www.youtube.com/embed/QhBnZ6NPOY0"
+    allowFullScreen
+  />
+</AspectRatioBox>
+
+## Avatar
+
+<Stack isInline>
+  <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+  <Avatar name="Kola Tioluwani" src="https://bit.ly/tioluwani-kolawole" />
+  <Avatar name="Kent Dodds" src="https://bit.ly/kent-c-dodds" />
+  <Avatar name="Ryan Florence" src="https://bit.ly/ryan-florence" />
+  <Avatar name="Prosper Otemuyiwa" src="https://bit.ly/prosper-baba" />
+  <Avatar name="Christian Nwamba" src="https://bit.ly/code-beast" />
+  <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
+</Stack>
+
+## Badge
+
+<Stack isInline>
+  <Badge>Default</Badge>
+  <Badge variantColor="green">Success</Badge>
+  <Badge variantColor="red">Removed</Badge>
+  <Badge variantColor="purple">New</Badge>
+</Stack>
+
+## Box
+
+<Box bg="tomato" w="100%" p={4} color="white">
+  This is the Box
+</Box>
+
+## Breadcrumbs
+
+<Breadcrumb>
+  <BreadcrumbItem>
+    <BreadcrumbLink href="#">Home</BreadcrumbLink>
+  </BreadcrumbItem>
+
+  <BreadcrumbItem>
+    <BreadcrumbLink href="#">Docs</BreadcrumbLink>
+  </BreadcrumbItem>
+
+  <BreadcrumbItem isCurrentPage>
+    <BreadcrumbLink href="#">Breadcrumb</BreadcrumbLink>
+  </BreadcrumbItem>
+</Breadcrumb>
+
+## Button
+
+<ButtonGroup spacing={4}>
+  <Button variantColor="teal" variant="solid">
+    Button
+  </Button>
+  <Button variantColor="teal" variant="outline">
+    Button
+  </Button>
+  <Button variantColor="teal" variant="ghost">
+    Button
+  </Button>
+  <Button variantColor="teal" variant="link">
+    Button
+  </Button>
+</ButtonGroup>
+
+## Checkbox
+
+<Stack spacing={10} isInline>
+  <Checkbox size="sm" variantColor="red">
+    Checkbox
+  </Checkbox>
+  <Checkbox size="md" variantColor="green" defaultIsChecked>
+    Checkbox
+  </Checkbox>
+  <Checkbox size="lg" variantColor="orange" defaultIsChecked>
+    Checkbox
+  </Checkbox>
+</Stack>
+
+## Circular Progress
+
+<CircularProgress value={59} size="100px" thickness={0.1} />
+
+## Close Button
+
+<CloseButton />
+
+## Code
+
+<Stack isInline>
+  <Code children="console.log(welcome)" />
+  <Code variantColor="red" children="var chakra = 'awesome!'" />
+  <Code variantColor="yellow" children="npm install chakra" />
+</Stack>
+
+You can also use Markdown code fences to create code blocks. The default `<code>` element is replaced with Chakra's.
+
+## Divider
+
+<Divider />
+
+You can also use Markdown `***` to create dividers. The default `<hr />` element is replaced with Chakra's Divider.
+
+## Editable
+
+<Editable defaultValue="Take some chakra">
+  <EditablePreview />
+  <EditableInput />
+</Editable>
+
+## Flex
+
+<Flex align="center">
+  <Flex bg="green.50" align="flex-end">
+    <Text>Box 1</Text>
+  </Flex>
+  <Flex bg="blue.50" size="150px" align="center" justify="center">
+    <Text textAlign="center" bg="pink.50">
+      Box 2
+    </Text>
+  </Flex>
+  <Box>
+    <Text bg="tomato" color="white">
+      Box 3
+    </Text>
+  </Box>
+</Flex>
+
+## Form Control
+
+<FormControl>
+  <FormLabel htmlFor="email">Email address</FormLabel>
+  <Input type="email" id="email" aria-describedby="email-helper-text" />
+  <FormHelperText id="email-helper-text">
+    We'll never share your email.
+  </FormHelperText>
+</FormControl>
+
+## Grid
+
+<Grid templateColumns="repeat(5, 1fr)" gap={6}>
+  <Box w="100%" h="10" bg="blue.500" />
+  <Box w="100%" h="10" bg="blue.500" />
+  <Box w="100%" h="10" bg="blue.500" />
+  <Box w="100%" h="10" bg="blue.500" />
+  <Box w="100%" h="10" bg="blue.500" />
+</Grid>
+
+## Heading
+
+<Stack spacing={3}>
+  <Heading as="h1" size="2xl">
+    In love with React & Next
+  </Heading>
+  <Heading as="h2" size="xl">
+    In love with React & Next
+  </Heading>
+  <Heading as="h3" size="lg">
+    In love with React & Next
+  </Heading>
+  <Heading as="h4" size="md">
+    In love with React & Next
+  </Heading>
+  <Heading as="h5" size="sm">
+    In love with React & Next
+  </Heading>
+  <Heading as="h6" size="xs">
+    In love with React & Next
+  </Heading>
+</Stack>
+
+## Icons
+
+<Stack isInline>
+  {/* Default size is 1em => 16px */}
+  <Icon name="phone" />
+
+  {/* Use the `size` prop to change the icon size */}
+  <Icon name="check-circle" size="24px" />
+
+  {/* Use the `color` prop to change the icon color */}
+  <Icon name="warning" size="32px" color="red.500" />
+</Stack>
+
+## Icon Button
+
+<IconButton variantColor="blue" aria-label="Search database" icon="search" />
+
+## Image
+
+<Image
+  rounded="full"
+  size="150px"
+  src="https://bit.ly/sage-adebayo"
+  alt="Segun Adebayo"
+/>
+
+## Input
+
+<Stack spacing={3}>
+  <Input placeholder="large size" size="lg" />
+  <Input placeholder="default size" size="md" />
+  <Input placeholder="small size" size="sm" />
+</Stack>
+
+## Link
+
+<Link href="https://chakra-ui.com" isExternal>
+  Chakra Design system <Icon name="external-link" mx="2px" />
+</Link>
+
+## List
+
+<List styleType="disc">
+  <ListItem>Lorem ipsum dolor sit amet</ListItem>
+  <ListItem>Consectetur adipiscing elit</ListItem>
+  <ListItem>Integer molestie lorem at massa</ListItem>
+  <ListItem>Facilisis in pretium nisl aliquet</ListItem>
+</List>
+
+## Menu
+
+<Menu>
+  <MenuButton as={Button} rightIcon="chevron-down">
+    Actions
+  </MenuButton>
+  <MenuList>
+    <MenuItem>Download</MenuItem>
+    <MenuItem>Create a Copy</MenuItem>
+    <MenuItem>Mark as Draft</MenuItem>
+    <MenuItem>Delete</MenuItem>
+    <MenuItem as="a" href="#">
+      Attend a Workshop
+    </MenuItem>
+  </MenuList>
+</Menu>
+
+## Number Input
+
+<NumberInput defaultValue={15} min={10} max={20}>
+  <NumberInputField />
+  <NumberInputStepper>
+    <NumberIncrementStepper />
+    <NumberDecrementStepper />
+  </NumberInputStepper>
+</NumberInput>
+
+## Popover
+
+<Popover>
+  <PopoverTrigger>
+    <Button>Trigger</Button>
+  </PopoverTrigger>
+  <PopoverContent zIndex={4}>
+    <PopoverArrow />
+    <PopoverCloseButton />
+    <PopoverHeader>Confirmation!</PopoverHeader>
+    <PopoverBody>Are you sure you want to have that milkshake?</PopoverBody>
+  </PopoverContent>
+</Popover>
+
+## Progress
+
+<Progress value={80} />
+
+## Pseudo Box
+
+<Flex as="form">
+  <PseudoBox
+    as="input"
+    placeholder="Your email"
+    type="email"
+    flex="1"
+    py={2}
+    px={4}
+    rounded="md"
+    bg="gray.100"
+    borderWidth="1px"
+    _hover={{ borderColor: "gray.200", bg: "gray.200" }}
+    _focus={{
+      outline: "none",
+      bg: "white",
+      boxShadow: "outline",
+      borderColor: "gray.300",
+    }}
+  />
+  <PseudoBox
+    as="button"
+    bg="teal.500"
+    py={2}
+    px={4}
+    ml={3}
+    rounded="md"
+    fontWeight="semibold"
+    color="white"
+    _hover={{ bg: "teal.600" }}
+    _focus={{ boxShadow: "outline" }}
+  >
+    Sign Up
+  </PseudoBox>
+</Flex>
+
+## Radio
+
+<RadioGroup defaultValue="2" spacing={5} isInline>
+  <Radio variantColor="red" value="1">
+    Radio
+  </Radio>
+  <Radio variantColor="green" value="2">
+    Radio
+  </Radio>
+</RadioGroup>
+
+## Simple Grid
+
+<SimpleGrid columns={2} spacing={10}>
+  <Box bg="tomato" height="80px"></Box>
+  <Box bg="tomato" height="80px"></Box>
+  <Box bg="tomato" height="80px"></Box>
+  <Box bg="tomato" height="80px"></Box>
+  <Box bg="tomato" height="80px"></Box>
+</SimpleGrid>
+
+## Select
+
+<Select placeholder="Select option">
+  <option value="option1">Option 1</option>
+  <option value="option2">Option 2</option>
+  <option value="option3">Option 3</option>
+</Select>
+
+## Skeleton
+
+<div>
+  <Skeleton height="20px" my="10px" />
+  <Skeleton height="20px" my="10px" />
+  <Skeleton height="20px" my="10px" />
+</div>
+
+## Slider
+
+<Slider defaultValue={30}>
+  <SliderTrack />
+  <SliderFilledTrack />
+  <SliderThumb />
+</Slider>
+
+## Spinner
+
+<Stack isInline spacing={4}>
+  <Spinner size="xs" />
+  <Spinner size="sm" />
+  <Spinner size="md" />
+  <Spinner size="lg" />
+  <Spinner size="xl" />
+</Stack>
+
+## Stat
+
+<StatGroup>
+  <Stat>
+    <StatLabel>Sent</StatLabel>
+    <StatNumber>345,670</StatNumber>
+    <StatHelpText>
+      <StatArrow type="increase" />
+      23.36%
+    </StatHelpText>
+  </Stat>
+
+  <Stat>
+    <StatLabel>Clicked</StatLabel>
+    <StatNumber>45</StatNumber>
+    <StatHelpText>
+      <StatArrow type="decrease" />
+      9.05%
+    </StatHelpText>
+  </Stat>
+</StatGroup>
+
+## Stack
+
+<Stack isInline spacing={8} align="center">
+    <Box p={5} shadow="md" borderWidth="1px" flex="1" rounded="md">
+      <Heading fontSize="xl">Plan Money</Heading>
+      <Text mt={4}>The future can be even brighter but a goal without a plan is just a wish</Text>
+    </Box>
+    <Box p={5} shadow="md" borderWidth="1px" flex="1" rounded="md">
+      <Heading fontSize="xl">Save Money</Heading>
+      <Text mt={4}>You deserve good things. With a whooping 10-15% interest rate per annum, grow your savings.</Text>
+    </Box>
+</Stack>
+
+## Switch
+
+<Stack align="center" isInline>
+  <Switch size="sm" />
+  <Switch size="md" />
+  <Switch size="lg" />
+</Stack>
+
+## Tabs
+
+<Tabs>
+  <TabList>
+    <Tab>One</Tab>
+    <Tab>Two</Tab>
+    <Tab>Three</Tab>
+  </TabList>
+
+  <TabPanels>
+    <TabPanel>
+      <p>one!</p>
+    </TabPanel>
+    <TabPanel>
+      <p>two!</p>
+    </TabPanel>
+    <TabPanel>
+      <p>three!</p>
+    </TabPanel>
+  </TabPanels>
+</Tabs>
+
+## Tags
+
+<Stack spacing={4} isInline>
+  {["sm", "md", "lg"].map(size => (
+    <Tag size={size} key={size} variantColor="gray">
+      Gray
+    </Tag>
+  ))}
+</Stack>
+
+## Text
+
+<Stack spacing={3}>
+  <Text fontSize="6xl">In love with React & Next</Text>
+  <Text fontSize="5xl">In love with React & Next</Text>
+  <Text fontSize="4xl">In love with React & Next</Text>
+  <Text fontSize="3xl">In love with React & Next</Text>
+  <Text fontSize="2xl">In love with React & Next</Text>
+  <Text fontSize="xl">In love with React & Next</Text>
+  <Text fontSize="lg">In love with React & Next</Text>
+  <Text fontSize="md">In love with React & Next</Text>
+  <Text fontSize="sm">In love with React & Next</Text>
+  <Text fontSize="xs">In love with React & Next</Text>
+</Stack>
+
+## Textarea
+
+<Textarea placeholder="Here is a sample placeholder" />
+
+## Tooltip
+
+<Tooltip label="Hey, I'm here!">Hover me</Tooltip>
+
 
 </DocsContent>
