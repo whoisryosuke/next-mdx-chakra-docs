@@ -89,12 +89,8 @@ const Sidebar = () => {
       >
         <Heading as="h1">Logo</Heading>
         <Box>
-          <Badge>v1.0.0</Badge>
-          <Box
-            display="inline-block"
-            visibility={['visible', 'hidden']}
-            marginLeft={4}
-          >
+          <Badge mt={3} py={1} px={2}>v1.0.0</Badge>
+          <Box display={['inline-block', 'none']} marginLeft={4}>
             <Button onClick={toggleSidebar}>Menu</Button>
           </Box>
         </Box>
